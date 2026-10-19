@@ -1,0 +1,21 @@
+.base-node {
+  background: white;
+  border: 1px black solid;
+  border-radius: 3px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+
+.base-node__header {
+  background: #25282a;
+  color: white;
+  flex: 0 0 auto;
+  padding: 4px 16px;
+}
+
+.base-node__content {
+  flex: 1 1 auto;
+  padding: 8px 16px;
+}
