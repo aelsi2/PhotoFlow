@@ -1,3 +1,5 @@
-const App = () => <h1>Hello World!</h1>
+import GraphEditor from "@/pages/GraphEditor";
+
+const App = () => <GraphEditor />
 
 export default App;
