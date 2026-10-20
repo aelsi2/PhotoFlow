@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { BaseNode } from "@/components/base-node";
+import { Position } from "@xyflow/react";
 
 const TextInputNode = () => {
   const [text, setText] = useState("");
@@ -7,6 +8,8 @@ const TextInputNode = () => {
   return (
     <BaseNode>
       <BaseNode.Header>Text Input</BaseNode.Header>
+      <BaseNode.Port type="source" position={Position.Bottom} />
+      <BaseNode.Port type="target" position={Position.Top} />
       <BaseNode.Content>
         <label htmlFor="text">Text: </label>
         <input

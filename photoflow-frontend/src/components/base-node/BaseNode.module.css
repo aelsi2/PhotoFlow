@@ -1,6 +1,8 @@
 .base-node {
-  background: white;
-  border: 1px black solid;
+  --base-node-primary: #25282a;
+  --base-node-background: #fbfffe;
+  background: var(--base-node-background);
+  border: 1px var(--base-node-primary) solid;
   border-radius: 3px;
   padding: 0;
   display: flex;
@@ -9,8 +11,8 @@
 }
 
 .base-node__header {
-  background: #25282a;
-  color: white;
+  background: var(--base-node-primary);
+  color: var(--base-node-background);
   flex: 0 0 auto;
   padding: 4px 16px;
 }
@@ -18,4 +20,14 @@
 .base-node__content {
   flex: 1 1 auto;
   padding: 8px 16px;
+}
+
+.base-node__port {
+  --handle-background: var(--base-node-background);
+  background: var(--handle-background) !important;
+  border: 1px var(--base-node-primary) solid !important;
+}
+
+.base-node__port_source {
+  --handle-background: var(--base-node-primary);
 }
