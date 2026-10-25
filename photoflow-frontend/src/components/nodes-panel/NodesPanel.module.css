@@ -1,0 +1,16 @@
+.nodes-panel {
+  --nodes-panel-primary: #25282a;
+  --nodes-panel-background: #fbfffe;
+
+  background: var(--nodes-panel-background);
+  color: var(--nodes-panel-primary);
+  border: 1px var(--nodes-panel-primary) solid;
+  border-radius: 15px;
+  display: flex;
+  padding: 12px;
+  gap: 6px;
+}
+
+.nodes-panel__item {
+  cursor: grab;
+}
