@@ -1,11 +1,10 @@
-package org.example.utils
+package ru.nsu.photoflow
 
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.serialization.json.Json
 
 internal class PrinterTest {
-
     @Test
     fun testMessage() {
         val message = "message"
