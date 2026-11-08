@@ -10,7 +10,6 @@ import io.ktor.server.response.respond
 import org.example.app.application.exception.InvalidPipelineException
 import org.example.app.application.exception.PipelineNameAlreadyInUseException
 import org.example.app.application.exception.PipelineNotFoundException
-import org.example.app.application.exception.PipelineStorageException
 import org.example.app.presentation.dto.ErrorResponse
 
 fun Application.configureStatusPages() {
@@ -26,10 +25,6 @@ fun Application.configureStatusPages() {
         }
         exception<PipelineNameAlreadyInUseException> { call, cause ->
             call.respond(HttpStatusCode.Conflict, ErrorResponse(cause.message.orEmpty()))
-        }
-        exception<PipelineStorageException> { call, cause ->
-            call.application.log.error("Pipeline storage failure", cause)
-            call.respond(HttpStatusCode.InternalServerError, ErrorResponse("Internal server error"))
         }
         exception<Throwable> { call, cause ->
             call.application.log.error("Unhandled exception", cause)

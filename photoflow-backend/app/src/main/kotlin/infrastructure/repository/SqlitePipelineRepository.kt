@@ -29,11 +29,10 @@ class SqlitePipelineRepository(
                 PipelineCreationResult.Success(pipeline = command.toPipeline(id = insertedId.value))
             }
         } catch (e: ExposedSQLException) {
-            if (e.isUniqueViolation()) {
-                PipelineCreationResult.NameAlreadyInUse
-            } else {
-                PipelineCreationResult.Failure(throwable = e)
+            if (!e.isUniqueViolation()) {
+                throw e
             }
+            PipelineCreationResult.NameAlreadyInUse
         }
 
     override fun findAll(): List<Pipeline> =

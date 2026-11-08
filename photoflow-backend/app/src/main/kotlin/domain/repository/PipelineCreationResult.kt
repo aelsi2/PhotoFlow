@@ -8,8 +8,4 @@ sealed interface PipelineCreationResult {
     ) : PipelineCreationResult
 
     object NameAlreadyInUse : PipelineCreationResult
-
-    data class Failure(
-        val throwable: Throwable,
-    ) : PipelineCreationResult
 }

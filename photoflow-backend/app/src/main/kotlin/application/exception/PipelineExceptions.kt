@@ -16,7 +16,3 @@ class PipelineNameAlreadyInUseException(
 class InvalidPipelineException(
     message: String,
 ) : PipelineException(message)
-
-class PipelineStorageException(
-    cause: Throwable,
-) : PipelineException("Pipeline storage failure", cause)
