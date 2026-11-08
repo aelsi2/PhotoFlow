@@ -30,12 +30,5 @@ class PipelineService(
         if (command.name.isBlank()) {
             throw InvalidPipelineException("Pipeline name must not be blank")
         }
-        if (command.name.length > MAX_NAME_LENGTH) {
-            throw InvalidPipelineException("Pipeline name must not exceed $MAX_NAME_LENGTH characters")
-        }
-    }
-
-    private companion object {
-        const val MAX_NAME_LENGTH = 255
     }
 }
