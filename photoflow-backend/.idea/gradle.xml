@@ -21,7 +21,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/utils" />
+            <option value="$PROJECT_DIR$/execution" />
+            <option value="$PROJECT_DIR$/type-system" />
           </set>
         </option>
         <option name="myGradleHome" value="" />
