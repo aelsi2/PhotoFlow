@@ -33,6 +33,9 @@ dependencies {
     // Swagger
     implementation(libs.ktor.server.swagger)
 
+    // Config
+    implementation(libs.ktoml.core)
+
     // SQLite
     implementation(libs.sqlite.jdbc)
     implementation(libs.bundles.exposed)
