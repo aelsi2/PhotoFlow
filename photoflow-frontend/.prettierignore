@@ -8,5 +8,7 @@ dist
 
 coverage
 
+src/_generated
+
 .DS_Store
 
