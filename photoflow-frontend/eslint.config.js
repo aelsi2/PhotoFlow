@@ -10,10 +10,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  globalIgnores([
-    "dist",
-    "src/_generated"
-  ]),
+  globalIgnores(["dist", "src/_generated"]),
 
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
