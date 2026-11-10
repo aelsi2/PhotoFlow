@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "gen:api": "apicraft generate"
+    "api:gen": "apicraft generate",
+    "api:mock": "mcs"
   },
   "dependencies": {
     "@mantine/core": "^9.7.5",
@@ -46,6 +47,7 @@
     "eslint-plugin-react-refresh": "^0.5.7",
     "eslint-plugin-react-x": "^5.28.8",
     "globals": "^17.13.0",
+    "mock-config-server": "^4.0.3",
     "postcss": "^8.5.32",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
