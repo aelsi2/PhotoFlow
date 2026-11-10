@@ -1,25 +1,14 @@
-import { Table, Text } from "@mantine/core";
+import { Table } from "@mantine/core";
 
-import { useGetPipelinesQuery } from "@/_generated/api";
+import { useGetPipelinesSuspenseQuery } from "@/_generated/api";
 import { zGetAllPipelinesResponse } from "@/_generated/api/zod.gen";
 
 export const PipelinesPage = () => {
-  const pipelinesQuery = useGetPipelinesQuery({});
+  const pipelinesQuery = useGetPipelinesSuspenseQuery({});
 
-  if (pipelinesQuery.isLoading) {
-    return <Text>Loading</Text>;
-  }
-
-  if (pipelinesQuery.isError || !pipelinesQuery.data) {
-    return <Text>Error</Text>;
-  }
-
-  const pipelinesQueryResult = zGetAllPipelinesResponse.safeParse(
+  const pipelinesQueryResult = zGetAllPipelinesResponse.parse(
     pipelinesQuery.data.data,
   );
-  if (!pipelinesQueryResult.success) {
-    return <Text>Error</Text>;
-  }
 
   return (
     <Table>
@@ -30,7 +19,7 @@ export const PipelinesPage = () => {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {pipelinesQueryResult.data.map((pipeline) => (
+        {pipelinesQueryResult.map((pipeline) => (
           <Table.Tr key={pipeline.id}>
             <Table.Td>{pipeline.id}</Table.Td>
             <Table.Td>{pipeline.name}</Table.Td>
