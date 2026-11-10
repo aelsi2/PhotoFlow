@@ -1,19 +1,25 @@
-import type { GetAllPipelinesResponse } from "@/_generated/api";
-import { Table } from "@mantine/core";
+import { Table, Text } from "@mantine/core";
+
+import { useGetPipelinesQuery } from "@/_generated/api";
+import { zGetAllPipelinesResponse } from "@/_generated/api/zod.gen";
 
 export const PipelinesPage = () => {
-  const pipelines: GetAllPipelinesResponse = [
-    { id: 0, name: "pipeline 0" },
-    { id: 1, name: "pipeline 1" },
-    { id: 2, name: "pipeline 2" },
-    { id: 3, name: "pipeline 3" },
-    { id: 4, name: "pipeline 4" },
-    { id: 5, name: "pipeline 5" },
-    { id: 6, name: "pipeline 6" },
-    { id: 7, name: "pipeline 7" },
-    { id: 8, name: "pipeline 8" },
-    { id: 9, name: "pipeline 9" },
-  ];
+  const pipelinesQuery = useGetPipelinesQuery({});
+
+  if (pipelinesQuery.isLoading) {
+    return <Text>Loading</Text>;
+  }
+
+  if (pipelinesQuery.isError || !pipelinesQuery.data) {
+    return <Text>Error</Text>;
+  }
+
+  const pipelinesQueryResult = zGetAllPipelinesResponse.safeParse(
+    pipelinesQuery.data.data,
+  );
+  if (!pipelinesQueryResult.success) {
+    return <Text>Error</Text>;
+  }
 
   return (
     <Table>
@@ -24,7 +30,7 @@ export const PipelinesPage = () => {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {pipelines.map((pipeline) => (
+        {pipelinesQueryResult.data.map((pipeline) => (
           <Table.Tr key={pipeline.id}>
             <Table.Td>{pipeline.id}</Table.Td>
             <Table.Td>{pipeline.name}</Table.Td>
@@ -33,4 +39,4 @@ export const PipelinesPage = () => {
       </Table.Tbody>
     </Table>
   );
-}
+};
