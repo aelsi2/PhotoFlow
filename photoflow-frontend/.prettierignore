@@ -1,0 +1,14 @@
+node_modules
+/pnpm-lock.yaml
+
+dist
+.turbo
+.next
+.cache
+
+coverage
+
+src/_generated
+
+.DS_Store
+
