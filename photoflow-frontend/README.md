@@ -1,76 +1,54 @@
-# React + TypeScript + Vite
+# PhotoFlow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A frontend for PhotoFlow project written in React.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Core**: React 19, TypeScript, Vite
+- **Routing**: TanStack Router
+- **Server State**: TanStack Query
+- **UI & Styling**: Mantine
+- **Code Quality**: ESLint, Prettier
+- **Packge Manager**: pnpm
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Make sure you have the following installed on your machine:
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+- [Node.js](https://nodejs.org) (v22 or v24 and higher)
+- [pnpm](https://pnpm.io) (v10 or higher)
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Clone repo**
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+3. **Run development server**
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+   ```bash
+   pnpm dev
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   The application will be available at `http://localhost:5173/`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+   > **Tip:** If the backend is unavailable, you can run the local mock server in a separate terminal:
+   >
+   > ```bash
+   > pnpm api:mock
+   > ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Available Scripts
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+| Script            | Description                                            |
+| :---------------- | :----------------------------------------------------- |
+| pnpm dev          | Starts the Vite development server                     |
+| pnpm build        | Type-checks and builds the app for production          |
+| pnpm preview      | Locally previews the production build                  |
+| pnpm lint         | Runs ESLint across the project                         |
+| pnpm lint:fix     | Applies ESLint auto-fixes                              |
+| pnpm format       | Formats code using Prettier                            |
+| pnpm format:check | Checks format using Prettier                           |
+| pnpm api:gen      | Generates API models and query hooks from OpenAPI spec |
+| pnpm api:mock     | Starts the local mock API server                       |
