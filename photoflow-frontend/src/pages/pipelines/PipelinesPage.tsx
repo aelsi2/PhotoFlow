@@ -4,11 +4,11 @@ import { useGetPipelinesSuspenseQuery } from "@/_generated/api";
 import { zGetAllPipelinesResponse } from "@/_generated/api/zod.gen";
 
 export const PipelinesPage = () => {
-  const pipelinesQuery = useGetPipelinesSuspenseQuery({});
-
-  const pipelinesQueryResult = zGetAllPipelinesResponse.parse(
-    pipelinesQuery.data.data,
-  );
+  const pipelinesQuery = useGetPipelinesSuspenseQuery({
+    params: {
+      select: (data) => zGetAllPipelinesResponse.parse(data.data),
+    },
+  });
 
   return (
     <Table>
@@ -19,7 +19,7 @@ export const PipelinesPage = () => {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {pipelinesQueryResult.map((pipeline) => (
+        {pipelinesQuery.data.map((pipeline) => (
           <Table.Tr key={pipeline.id}>
             <Table.Td>{pipeline.id}</Table.Td>
             <Table.Td>{pipeline.name}</Table.Td>
