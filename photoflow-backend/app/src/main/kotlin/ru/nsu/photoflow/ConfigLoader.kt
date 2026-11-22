@@ -9,24 +9,38 @@ object ConfigLoader {
         "Usage: [--config=<path to TOML file>] [--host=<host>] " +
             "[--port=<1-65535>] [--database-url=<jdbc url>]"
 
-    private val KNOWN_OPTIONS = setOf("config", "host", "port", "database-url")
-
     fun load(args: Array<String>): AppConfig {
-        val options = parseOptions(args)
-        val base = options["config"]?.let(::readFile) ?: AppConfig()
-        return base.withOverrides(options)
-    }
+        var configPath: String? = null
+        var host: String? = null
+        var port: String? = null
+        var databaseUrl: String? = null
 
-    private fun parseOptions(args: Array<String>): Map<String, String> {
-        val options =
-            args.associate { arg ->
-                require(arg.startsWith("--") && '=' in arg) { "Invalid argument '$arg', expected --name=value" }
-                arg.removePrefix("--").substringBefore('=') to arg.substringAfter('=')
+        for (arg in args) {
+            require(arg.startsWith("--") && '=' in arg) {
+                "Invalid argument '$arg', expected --name=value"
             }
+            val name = arg.removePrefix("--").substringBefore('=')
+            val value = arg.substringAfter('=')
+            require(value.isNotEmpty()) { "Missing value for --$name" }
 
-        val unknown = options.keys - KNOWN_OPTIONS
-        require(unknown.isEmpty()) { "Unknown option(s): ${unknown.joinToString()}" }
-        return options
+            when (name) {
+                "config" -> configPath = value
+                "host" -> host = value
+                "port" -> port = value
+                "database-url" -> databaseUrl = value
+                else -> throw IllegalArgumentException("Unknown option: --$name")
+            }
+        }
+
+        val base = configPath?.let(::readFile) ?: AppConfig()
+        return base.copy(
+            server =
+                base.server.copy(
+                    host = host ?: base.server.host,
+                    port = port?.let(::parsePort) ?: base.server.port,
+                ),
+            database = base.database.copy(url = databaseUrl ?: base.database.url),
+        )
     }
 
     private fun readFile(path: String): AppConfig {
@@ -39,16 +53,6 @@ object ConfigLoader {
             throw IllegalArgumentException("Invalid config file '$path': ${e.message}", e)
         }
     }
-
-    private fun AppConfig.withOverrides(options: Map<String, String>): AppConfig =
-        copy(
-            server =
-                server.copy(
-                    host = options["host"] ?: server.host,
-                    port = options["port"]?.let(::parsePort) ?: server.port,
-                ),
-            database = database.copy(url = options["database-url"] ?: database.url),
-        )
 
     private fun parsePort(raw: String): Int =
         requireNotNull(raw.toIntOrNull()) {
