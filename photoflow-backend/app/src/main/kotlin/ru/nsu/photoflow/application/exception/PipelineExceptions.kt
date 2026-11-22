@@ -11,6 +11,7 @@ class PipelineNotFoundException(
 
 class PipelineNameAlreadyInUseException(
     name: String,
+    val existingPipelineId: Int,
 ) : PipelineException("Pipeline name '$name' is already in use")
 
 class InvalidPipelineException(

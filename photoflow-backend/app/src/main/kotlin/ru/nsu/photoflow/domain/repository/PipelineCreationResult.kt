@@ -7,5 +7,7 @@ sealed interface PipelineCreationResult {
         val pipeline: Pipeline,
     ) : PipelineCreationResult
 
-    object NameAlreadyInUse : PipelineCreationResult
+    data class NameAlreadyInUse(
+        val existingPipelineId: Int,
+    ) : PipelineCreationResult
 }

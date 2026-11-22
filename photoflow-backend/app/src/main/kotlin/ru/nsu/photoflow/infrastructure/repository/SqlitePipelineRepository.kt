@@ -34,7 +34,16 @@ class SqlitePipelineRepository(
             if (!e.isUniqueViolation()) {
                 throw e
             }
-            PipelineCreationResult.NameAlreadyInUse
+            val existingId =
+                transaction(database) {
+                    PipelinesTable
+                        .selectAll()
+                        .where { PipelinesTable.name eq name.value }
+                        .firstOrNull()
+                        ?.get(PipelinesTable.id)
+                        ?.value
+                } ?: throw e
+            PipelineCreationResult.NameAlreadyInUse(existingPipelineId = existingId)
         }
 
     override fun findAll(): List<Pipeline> =

@@ -11,6 +11,7 @@ import ru.nsu.photoflow.application.exception.InvalidPipelineException
 import ru.nsu.photoflow.application.exception.PipelineNameAlreadyInUseException
 import ru.nsu.photoflow.application.exception.PipelineNotFoundException
 import ru.nsu.photoflow.presentation.dto.ErrorResponse
+import ru.nsu.photoflow.presentation.dto.PipelineNameConflictResponse
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
@@ -24,7 +25,13 @@ fun Application.configureStatusPages() {
             call.respond(HttpStatusCode.NotFound, ErrorResponse(cause.message.orEmpty()))
         }
         exception<PipelineNameAlreadyInUseException> { call, cause ->
-            call.respond(HttpStatusCode.Conflict, ErrorResponse(cause.message.orEmpty()))
+            call.respond(
+                HttpStatusCode.Conflict,
+                PipelineNameConflictResponse(
+                    message = cause.message.orEmpty(),
+                    existingPipelineId = cause.existingPipelineId,
+                ),
+            )
         }
         exception<Throwable> { call, cause ->
             call.application.log.error("Unhandled exception", cause)

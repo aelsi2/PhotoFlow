@@ -17,7 +17,10 @@ class PipelineService(
     fun create(name: PipelineName): Pipeline =
         when (val result = repository.create(name)) {
             is PipelineCreationResult.Success -> result.pipeline
-            PipelineCreationResult.NameAlreadyInUse ->
-                throw PipelineNameAlreadyInUseException(name.value)
+            is PipelineCreationResult.NameAlreadyInUse ->
+                throw PipelineNameAlreadyInUseException(
+                    name = name.value,
+                    existingPipelineId = result.existingPipelineId,
+                )
         }
 }

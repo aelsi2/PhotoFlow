@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/PipelineNameConflictResponse"
         "500":
           $ref: "#/components/responses/InternalError"
 
@@ -129,6 +129,19 @@ components:
           type: string
           description: Human-readable error message
           example: Pipeline with id=42 not found
+    PipelineNameConflictResponse:
+      type: object
+      required: [message, existingPipelineId]
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+          example: Pipeline name 'Resize and watermark' is already in use
+        existingPipelineId:
+          type: integer
+          format: int32
+          description: ID of the existing pipeline with the same name
+          example: 42
   responses:
     InternalError:
       description: Internal server error
