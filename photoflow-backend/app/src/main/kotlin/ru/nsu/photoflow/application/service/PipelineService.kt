@@ -1,10 +1,9 @@
 package ru.nsu.photoflow.application.service
 
-import ru.nsu.photoflow.application.exception.InvalidPipelineException
 import ru.nsu.photoflow.application.exception.PipelineNameAlreadyInUseException
 import ru.nsu.photoflow.application.exception.PipelineNotFoundException
 import ru.nsu.photoflow.domain.model.Pipeline
-import ru.nsu.photoflow.domain.repository.CreatePipelineCommand
+import ru.nsu.photoflow.domain.model.PipelineName
 import ru.nsu.photoflow.domain.repository.PipelineCreationResult
 import ru.nsu.photoflow.domain.repository.PipelineRepository
 
@@ -15,18 +14,10 @@ class PipelineService(
 
     fun getById(id: Int): Pipeline = repository.findById(id) ?: throw PipelineNotFoundException(id)
 
-    fun create(command: CreatePipelineCommand): Pipeline {
-        validate(command)
-
-        return when (val result = repository.create(command)) {
+    fun create(name: PipelineName): Pipeline =
+        when (val result = repository.create(name)) {
             is PipelineCreationResult.Success -> result.pipeline
-            PipelineCreationResult.NameAlreadyInUse -> throw PipelineNameAlreadyInUseException(command.name)
+            PipelineCreationResult.NameAlreadyInUse ->
+                throw PipelineNameAlreadyInUseException(name.value)
         }
-    }
-
-    private fun validate(command: CreatePipelineCommand) {
-        if (command.name.isBlank()) {
-            throw InvalidPipelineException("Pipeline name must not be blank")
-        }
-    }
 }

@@ -12,7 +12,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import ru.nsu.photoflow.application.service.PipelineService
 import ru.nsu.photoflow.presentation.dto.CreatePipelineRequest
-import ru.nsu.photoflow.presentation.mapper.toCommand
+import ru.nsu.photoflow.presentation.mapper.toPipelineName
 import ru.nsu.photoflow.presentation.mapper.toResponse
 
 private const val PIPELINES_PATH = "/api/v1/pipelines"
@@ -25,7 +25,7 @@ fun Route.pipelineRoutes(service: PipelineService) {
 
         post {
             val request = call.receive<CreatePipelineRequest>()
-            val pipeline = service.create(request.toCommand())
+            val pipeline = service.create(request.toPipelineName())
 
             call.response.header(HttpHeaders.Location, "$PIPELINES_PATH/${pipeline.id}")
             call.respond(HttpStatusCode.Created, pipeline.toResponse())

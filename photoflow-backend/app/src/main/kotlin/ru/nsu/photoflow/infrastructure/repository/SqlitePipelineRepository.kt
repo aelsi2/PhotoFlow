@@ -10,7 +10,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.sqlite.SQLiteErrorCode
 import org.sqlite.SQLiteException
 import ru.nsu.photoflow.domain.model.Pipeline
-import ru.nsu.photoflow.domain.repository.CreatePipelineCommand
+import ru.nsu.photoflow.domain.model.PipelineName
 import ru.nsu.photoflow.domain.repository.PipelineCreationResult
 import ru.nsu.photoflow.domain.repository.PipelineRepository
 import ru.nsu.photoflow.infrastructure.db.PipelinesTable
@@ -18,15 +18,17 @@ import ru.nsu.photoflow.infrastructure.db.PipelinesTable
 class SqlitePipelineRepository(
     private val database: Database,
 ) : PipelineRepository {
-    override fun create(command: CreatePipelineCommand): PipelineCreationResult =
+    override fun create(name: PipelineName): PipelineCreationResult =
         try {
             transaction(database) {
                 val insertedId =
                     PipelinesTable.insert {
-                        it[name] = command.name
+                        it[PipelinesTable.name] = name.value
                     } get PipelinesTable.id
 
-                PipelineCreationResult.Success(pipeline = command.toPipeline(id = insertedId.value))
+                PipelineCreationResult.Success(
+                    pipeline = Pipeline(id = insertedId.value, name = name),
+                )
             }
         } catch (e: ExposedSQLException) {
             if (!e.isUniqueViolation()) {
@@ -53,7 +55,7 @@ class SqlitePipelineRepository(
 private fun ResultRow.toPipeline() =
     Pipeline(
         id = this[PipelinesTable.id].value,
-        name = this[PipelinesTable.name],
+        name = PipelineName(this[PipelinesTable.name]),
     )
 
 private fun ExposedSQLException.isUniqueViolation(): Boolean =
