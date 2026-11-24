@@ -1,5 +1,6 @@
 import { Badge, Button, Group, Table, TextInput, Title } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 import {
@@ -81,7 +82,15 @@ export const PipelinesPage = () => {
           {pipelinesQuery.data.map((pipeline) => (
             <Table.Tr key={pipeline.id}>
               <Table.Td>{pipeline.id}</Table.Td>
-              <Table.Td>{pipeline.name}</Table.Td>
+              <Table.Td>
+                <Link
+                  to="/pipelines/$pipelineId"
+                  params={{ pipelineId: pipeline.id }}
+                  style={{ color: "inherit" }}
+                >
+                  {pipeline.name}
+                </Link>
+              </Table.Td>
             </Table.Tr>
           ))}
         </Table.Tbody>
