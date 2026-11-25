@@ -10,43 +10,53 @@
 
 import { Route as rootRouteImport } from "./../routes/__root";
 import { Route as IndexRouteImport } from "./../routes/index";
-import { Route as PipelinesRouteImport } from "./../routes/pipelines";
+import { Route as PipelinesIndexRouteImport } from "./../routes/pipelines/index";
+import { Route as PipelinesPipelineIdRouteImport } from "./../routes/pipelines/$pipelineId";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const PipelinesRoute = PipelinesRouteImport.update({
-  id: "/pipelines",
-  path: "/pipelines",
+const PipelinesIndexRoute = PipelinesIndexRouteImport.update({
+  id: "/pipelines/",
+  path: "/pipelines/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const PipelinesPipelineIdRoute = PipelinesPipelineIdRouteImport.update({
+  id: "/pipelines/$pipelineId",
+  path: "/pipelines/$pipelineId",
   getParentRoute: () => rootRouteImport,
 } as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
-  "/pipelines": typeof PipelinesRoute;
+  "/pipelines/$pipelineId": typeof PipelinesPipelineIdRoute;
+  "/pipelines/": typeof PipelinesIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
-  "/pipelines": typeof PipelinesRoute;
+  "/pipelines/$pipelineId": typeof PipelinesPipelineIdRoute;
+  "/pipelines": typeof PipelinesIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
-  "/pipelines": typeof PipelinesRoute;
+  "/pipelines/$pipelineId": typeof PipelinesPipelineIdRoute;
+  "/pipelines/": typeof PipelinesIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/pipelines";
+  fullPaths: "/" | "/pipelines/$pipelineId" | "/pipelines/";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/pipelines";
-  id: "__root__" | "/" | "/pipelines";
+  to: "/" | "/pipelines/$pipelineId" | "/pipelines";
+  id: "__root__" | "/" | "/pipelines/$pipelineId" | "/pipelines/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  PipelinesRoute: typeof PipelinesRoute;
+  PipelinesPipelineIdRoute: typeof PipelinesPipelineIdRoute;
+  PipelinesIndexRoute: typeof PipelinesIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -58,11 +68,18 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/pipelines": {
-      id: "/pipelines";
+    "/pipelines/": {
+      id: "/pipelines/";
       path: "/pipelines";
-      fullPath: "/pipelines";
-      preLoaderRoute: typeof PipelinesRouteImport;
+      fullPath: "/pipelines/";
+      preLoaderRoute: typeof PipelinesIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/pipelines/$pipelineId": {
+      id: "/pipelines/$pipelineId";
+      path: "/pipelines/$pipelineId";
+      fullPath: "/pipelines/$pipelineId";
+      preLoaderRoute: typeof PipelinesPipelineIdRouteImport;
       parentRoute: typeof rootRouteImport;
     };
   }
@@ -70,7 +87,8 @@ declare module "@tanstack/react-router" {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PipelinesRoute: PipelinesRoute,
+  PipelinesPipelineIdRoute: PipelinesPipelineIdRoute,
+  PipelinesIndexRoute: PipelinesIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

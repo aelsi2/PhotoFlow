@@ -10,6 +10,13 @@ import "./index.css";
 import "@mantine/core/styles.css";
 
 const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
 const queryClient = new QueryClient();
 const theme = createTheme({});
 
