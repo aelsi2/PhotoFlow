@@ -1,0 +1,11 @@
+.git
+node_modules
+dist
+.tanstack
+.eslintcache
+.idea
+.DS_Store
+*.log
+.env*
+README.md
+.prettierignore

@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./photoflow-backend
+    volumes:
+      - backend-data:/data
+    tmpfs:
+      - /tmp:exec,size=256m
+    mem_limit: 512m
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://127.0.0.1:8080/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    build: ./photoflow-frontend
+    ports:
+      - "80:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    tmpfs:
+      - /tmp
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+volumes:
+  backend-data:

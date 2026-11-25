@@ -1,0 +1,12 @@
+.git
+**/.gradle
+**/build
+**/.kotlin
+.idea
+*.db
+.DS_Store
+**/.DS_Store
+*.iml
+out
+README.md
+gradlew.bat
